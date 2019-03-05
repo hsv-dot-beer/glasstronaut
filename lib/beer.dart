@@ -19,20 +19,22 @@ class Beer {
   final String taphunterURL;
 
   Beer(
-      this.manufacturer,
       this.name,
-      this.style,
-      this.styleCategory,
-      this.inProduction,
-      this.abv,
-      this.ibu,
-      this.color,
-      this.untappdURL,
-      this.beerAdvocateURL,
-      this.rateBeerURL,
-      this.logoURL,
-      this.manufacturerURL,
-      this.taphunterURL,
+      this.manufacturer,
+      {
+        this.styleCategory,
+        this.style,
+        this.inProduction,
+        this.abv,
+        this.ibu,
+        this.color,
+        this.untappdURL,
+        this.beerAdvocateURL,
+        this.rateBeerURL,
+        this.logoURL,
+        this.manufacturerURL,
+        this.taphunterURL,
+      }
   );
 
   Beer.fromJson(Map<String, dynamic> json):

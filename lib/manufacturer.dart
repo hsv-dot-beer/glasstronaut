@@ -11,14 +11,16 @@ class Manufacturer {
 
   Manufacturer(
       this.name,
-      this.url,
-      this.location,
-      this.logoURL,
-      this.facebookURL,
-      this.twitterHandle,
-      this.instagramHandle,
-      this.untappdURL,
-      this.taphunterURL,
+      {
+        this.url,
+        this.location,
+        this.logoURL,
+        this.facebookURL,
+        this.twitterHandle,
+        this.instagramHandle,
+        this.untappdURL,
+        this.taphunterURL,
+      }
   );
 
   Manufacturer.fromJson(Map<String, dynamic> json):

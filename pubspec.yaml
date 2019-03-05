@@ -23,6 +23,9 @@ dependencies:
   # parse decimals properly
   decimal: ^0.3.0
 
+  # web!
+  http: ^0.12.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
