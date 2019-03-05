@@ -9,7 +9,7 @@ class Beer {
   final String styleCategory;
   final bool inProduction;
   final Decimal abv;
-  final Decimal ibu;
+  final int ibu;
   final HideableHexColor color;
   final String untappdURL;
   final String beerAdvocateURL;
@@ -45,11 +45,11 @@ class Beer {
     logoURL = json['logo_url'],
     untappdURL = json['untappd_url'],
     taphunterURL = json['taphunter_url'],
-    abv = Decimal.parse(json['abv']),
-    ibu = Decimal.parse(json['ibu']),
+    abv = json['abv'] == null ? Decimal.fromInt(0) : Decimal.parse(json['abv']),
+    ibu = json['ibu'],
     inProduction = json['in_production'],
-    color = HideableHexColor(json['color_html']),
+    color = HideableHexColor(json['color_srm_html']),
     rateBeerURL = json['rate_beer_url'],
-    style = json['style']['name'],
-    styleCategory = json['style']['category']['name'];
+    style = json['style'] == null ? '' : json['style']['name'],
+    styleCategory = json['style'] == null ? '' : json['style']['category']['name'];
 }

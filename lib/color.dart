@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
 
 class HideableHexColor extends Color {
   static int _getColorFromHex(String hexColor) {
+    debugPrint('converting color $hexColor');
     hexColor = hexColor.toUpperCase().replaceAll('#', '');
     if (hexColor == 'FFFFFF') {
       // HACK!
