@@ -1906,5 +1906,6 @@ void main() {
     debugPrint('beers: $beers');
     expect(beers.length, 25);
     expect(beers.elementAt(0).name, 'Grapefruit Honey Lager');
+    expect(beers.elementAt(7).name, "Berry Rosé");
   });
 }

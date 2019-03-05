@@ -84,17 +84,14 @@ Future<List<Beer>> fetchBeers() async {
       'http://dev.hsv.beer/api/v1/beers/'
   );
 
-  debugPrint('Got response ${response.statusCode}');
   List<Beer> beers = new List<Beer>();
 
   if (response.statusCode == 200) {
-    final decodedJson = json.decode(response.body);
-    debugPrint('Got JSON $decodedJson');
+    final decodedJson = json.decode(utf8.decode(response.bodyBytes));
     beers = new List<Beer>.from(decodedJson['results'].map((x) => Beer.fromJson(x)));
-    debugPrint('Done parsing');
   } else {
     throw Exception('Beers failed to load! ' + response.body);
   }
-  debugPrint('Returning $beers');
+  debugPrint('done parsing');
   return beers;
 }
