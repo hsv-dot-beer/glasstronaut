@@ -3,9 +3,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'beer.dart';
+import 'beer_icons.dart';
 
 void main() => runApp(MyApp(beers: fetchBeers()));
 
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.amber[600],
         accentColor: Colors.amberAccent,
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -71,7 +73,7 @@ class MyApp extends StatelessWidget {
             height: 50,
           ) : null,
           trailing: Icon(
-            Icons.local_drink,
+            BeerIcons.beer,
             color: beer.color,
           )
       );
