@@ -1,0 +1,185 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart';
+import 'package:beers/venue.dart';
+
+void main() {
+  test('Venue from JSON is valid', () {
+    final json = [
+      {
+        "id": 16,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "Untappd",
+        "name": "Blue Pants Brewery",
+        "address": "500 Lanier Road, Building 1, Suite A",
+        "city": "Madison",
+        "state": "AL",
+        "postal_code": "35758",
+        "country": "US",
+        "website": "http://bluepantsbrew.com",
+        "facebook_page": "https://www.facebook.com/bluepantsbrewery/",
+        "twitter_handle": "bluepantsbrew",
+        "instagram_handle": "",
+        "tap_list_provider": "untappd",
+        "untappd_url": null
+      },
+      {
+        "id": 11,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "Untappd",
+        "name": "Das Stahl Bierhaus",
+        "address": "7914 Memorial Parkway SW",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35802",
+        "country": "US",
+        "website": "http://www.dsb-hsv.com/",
+        "facebook_page": "https://www.facebook.com/DSBHSV/",
+        "twitter_handle": "",
+        "instagram_handle": "",
+        "tap_list_provider": "untappd",
+        "untappd_url": null
+      },
+      {
+        "id": 7,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "TapHunter",
+        "name": "Liquor Express",
+        "address": "1812 University Dr NW",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35801",
+        "country": "US",
+        "website": "http://liquorexpress.net/",
+        "facebook_page": "https://www.facebook.com/liquorexpresshsv/",
+        "twitter_handle": "LiquorExpressAL",
+        "instagram_handle": "liquorexpress",
+        "tap_list_provider": "taphunter",
+        "untappd_url": null
+      },
+      {
+        "id": 14,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "Untappd",
+        "name": "Mad Malts Brewery",
+        "address": "109 Maple Ave NW",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35801",
+        "country": "US",
+        "website": "http://madmaltsbrewing.com/",
+        "facebook_page": "https://www.facebook.com/MadMaltsBrewing1/",
+        "twitter_handle": "",
+        "instagram_handle": "",
+        "tap_list_provider": "untappd",
+        "untappd_url": null
+      },
+      {
+        "id": 4,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "DigitalPour",
+        "name": "Old Town Beer Exchange",
+        "address": "301 Holmes Avenue",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35801",
+        "country": "US",
+        "website": "http://otbxhsv.com",
+        "facebook_page": "https://www.facebook.com/OTBXHSV",
+        "twitter_handle": "OTBXHSV",
+        "instagram_handle": "otbxhsv",
+        "tap_list_provider": "digitalpour",
+        "untappd_url": null
+      },
+      {
+        "id": 5,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "DigitalPour",
+        "name": "Rocket City Craft Beer",
+        "address": "1079 Balch Road, Suite F",
+        "city": "Madison",
+        "state": "Alabama",
+        "postal_code": "35758",
+        "country": "US",
+        "website": "https://www.rocketcitycraftbeer.com/",
+        "facebook_page": "http://www.facebook.com/rocketcitycraftbeer",
+        "twitter_handle": "rccbh",
+        "instagram_handle": "rocketcitycraftbeer",
+        "tap_list_provider": "digitalpour",
+        "untappd_url": null
+      },
+      {
+        "id": 1,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "DigitalPour",
+        "name": "Straight to Ale",
+        "address": "2610 Clinton Avenue",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35805",
+        "country": "US",
+        "website": "https://straighttoale.com/",
+        "facebook_page": "https://www.facebook.com/straighttoale/",
+        "twitter_handle": "StraightToAle",
+        "instagram_handle": "straighttoale",
+        "tap_list_provider": "digitalpour",
+        "untappd_url": null
+      },
+      {
+        "id": 12,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "Untappd",
+        "name": "The Casual Pint - Providence",
+        "address": "2 Off Broadway St NW, Ste 100",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35806",
+        "country": "US",
+        "website": "https://huntsville.thecasualpint.com/",
+        "facebook_page": "https://www.facebook.com/casualpinthsv",
+        "twitter_handle": "casualpinthsv",
+        "instagram_handle": "casualpinthsv",
+        "tap_list_provider": "untappd",
+        "untappd_url": null
+      },
+      {
+        "id": 10,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "The Nook's static HTML",
+        "name": "The Nook",
+        "address": "3305 Bob Wallace Ave SW",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35805",
+        "country": "US",
+        "website": "http://www.thenooktavern.com",
+        "facebook_page": "",
+        "twitter_handle": "",
+        "instagram_handle": "",
+        "tap_list_provider": "nook_html",
+        "untappd_url": null
+      },
+      {
+        "id": 9,
+        "time_zone": "America/Chicago",
+        "tap_list_provider_display": "TapHunter",
+        "name": "The Open Bottle",
+        "address": "7061 Highway 72 West",
+        "city": "Huntsville",
+        "state": "Alabama",
+        "postal_code": "35806",
+        "country": "US",
+        "website": "",
+        "facebook_page": "https://www.facebook.com/TheOpenBottleMadison/",
+        "twitter_handle": "",
+        "instagram_handle": "",
+        "tap_list_provider": "taphunter",
+        "untappd_url": null
+      }
+    ];
+    final venues = json.map((x) => Venue.fromJson(x));
+    debugPrint('venues: $venues');
+    expect(venues.length, 10);
+    expect(venues.elementAt(0).name, 'Blue Pants Brewery');
+    expect(venues.elementAt(0).id, 16);
+  });
+}
