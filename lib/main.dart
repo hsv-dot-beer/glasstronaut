@@ -8,14 +8,16 @@ import 'package:http/http.dart' as http;
 
 import 'beer.dart';
 import 'beer_icons.dart';
+import 'venue.dart';
 
 void main() => runApp(MyApp(beers: fetchBeers()));
 
 class MyApp extends StatelessWidget {
 
+  final Venue chosenVenue;
   final Future<List<Beer>> beers;
 
-  MyApp({Key key, this.beers}): super(key: key);
+  MyApp({Key key, this.beers, this.chosenVenue}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +70,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
           subtitle: Text(beer.manufacturer.name),
-          leading: (beer.logoURL != null && beer.logoURL != '') ? Image.network(
-            beer.logoURL,
+          leading: (beer.logoUrl != null && beer.logoUrl != '') ? Image.network(
+            beer.logoUrl,
             height: 50,
           ) : null,
           trailing: Icon(
@@ -77,6 +79,20 @@ class MyApp extends StatelessWidget {
             color: beer.color,
           )
       );
+
+  DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
+    return DropdownButton<Venue>(
+      items: venues.map(
+              (venue) => DropdownMenuItem<Venue>(
+            value: venue,
+            child: Text(venue.name),
+          )
+      ),
+      value: chosenVenue,
+      onChanged: (Venue newValue) {
+      },
+    );
+  }
 }
 
 
@@ -96,4 +112,23 @@ Future<List<Beer>> fetchBeers() async {
   }
   debugPrint('done parsing');
   return beers;
+}
+
+
+Future<List<Venue>> fetchVenues() async {
+  debugPrint('getting venues');
+  final response = await http.get(
+    'http://dev.hsv.beer/api/v1/venues/',
+  );
+
+  List<Venue> venues = new List<Venue>();
+
+  if (response.statusCode == 200) {
+    final decodedJson = json.decode(utf8.decode(response.bodyBytes));
+    venues = new List<Venue>.from(decodedJson['results'].map((x) => Venue.fromJson(x)));
+  } else {
+    throw Exception('Venues failed to load! ' + response.body);
+  }
+  debugPrint('done parsing');
+  return venues;
 }

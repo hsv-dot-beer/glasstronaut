@@ -177,7 +177,6 @@ void main() {
       }
     ];
     final venues = json.map((x) => Venue.fromJson(x));
-    debugPrint('venues: $venues');
     expect(venues.length, 10);
     expect(venues.elementAt(0).name, 'Blue Pants Brewery');
     expect(venues.elementAt(0).id, 16);
