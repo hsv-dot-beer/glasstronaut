@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:flutter_pagewise/flutter_pagewise.dart';
 
 import 'beer.dart';
 import 'beer_icons.dart';
 import 'venue.dart';
 
 void main() => runApp(MyApp(beers: fetchBeers()));
+
+final int pageSize = 25;
 
 class MyApp extends StatelessWidget {
 
@@ -34,21 +37,15 @@ class MyApp extends StatelessWidget {
           title: Text('hsv.beer'),
         ),
         body: Center(
-          child: FutureBuilder<List<Beer>> (
-            future: beers,
-            builder: (context, snapshot) {
-              debugPrint('context $context');
-              debugPrint('snapshot $snapshot');
-              if (snapshot.hasData) {
-                debugPrint('got data');
-                return buildList(snapshot.data);
-              } else if (snapshot.hasError) {
-                debugPrint('something went wrong');
-                return Text('${snapshot.error}');
+          child: PagewiseListView(
+              pageSize: pageSize,
+              padding: EdgeInsets.all(15.0),
+              itemBuilder: (context, entry, index) {
+                return beer(entry);
+              },
+              pageFuture: (pageIndex) {
+                return fetchBeers(page: pageIndex);
               }
-              debugPrint('not done yet');
-              return CircularProgressIndicator();
-            }
           ),
         ),
       ),
@@ -96,11 +93,14 @@ class MyApp extends StatelessWidget {
 }
 
 
-Future<List<Beer>> fetchBeers() async {
+Future<List<Beer>> fetchBeers({int page = 0}) async {
   debugPrint('making HTTP request');
-  final response = await http.get(
-      'http://dev.hsv.beer/api/v1/beers/'
-  );
+  String url;
+
+  // Django page offsets are 1-based, while the page lib is zero-based
+  url = 'http://dev.hsv.beer/api/v1/beers/?on_tap=True&page=${page + 1}';
+  debugPrint('page: $page, url $url');
+  final response = await http.get(url);
 
   List<Beer> beers = new List<Beer>();
 
