@@ -11,16 +11,11 @@ import 'beer.dart';
 import 'beer_icons.dart';
 import 'venue.dart';
 
-void main() => runApp(MyApp(beers: fetchBeers()));
+void main() => runApp(MyApp());
 
 final int pageSize = 25;
 
 class MyApp extends StatelessWidget {
-
-  final Venue chosenVenue;
-  final Future<List<Beer>> beers;
-
-  MyApp({Key key, this.beers, this.chosenVenue}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +31,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('hsv.beer'),
         ),
-        body: Center(
-          child: PagewiseListView(
-              pageSize: pageSize,
-              padding: EdgeInsets.all(15.0),
-              itemBuilder: (context, entry, index) {
-                return beer(entry);
-              },
-              pageFuture: (pageIndex) {
-                return fetchBeers(page: pageIndex);
-              }
-          ),
-        ),
+        body: BeerWidget()
       ),
     );
   }
@@ -76,20 +60,6 @@ class MyApp extends StatelessWidget {
             color: beer.color,
           )
       );
-
-  DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
-    return DropdownButton<Venue>(
-      items: venues.map(
-              (venue) => DropdownMenuItem<Venue>(
-            value: venue,
-            child: Text(venue.name),
-          )
-      ),
-      value: chosenVenue,
-      onChanged: (Venue newValue) {
-      },
-    );
-  }
 }
 
 
@@ -129,6 +99,106 @@ Future<List<Venue>> fetchVenues() async {
   } else {
     throw Exception('Venues failed to load! ' + response.body);
   }
-  debugPrint('done parsing');
+  debugPrint('done parsing, venues $venues');
   return venues;
+}
+
+class BeerWidget extends StatefulWidget {
+  BeerWidget({Key key}) : super(key: key);
+
+  @override
+  _BeerWidgetState createState() => _BeerWidgetState(
+    beers: fetchBeers(),
+    venues: fetchVenues(),
+  );
+
+}
+
+class _BeerWidgetState extends State<BeerWidget> {
+
+  _BeerWidgetState({this.beers, this.venues}): super();
+
+  Venue chosenVenue;
+  Future<List<Beer>> beers;
+  Future<List<Venue>> venues;
+  String searchString = '';
+
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        FutureBuilder<List<Venue>>(
+            future: venues,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                debugPrint('venues: $snapshot');
+                return buildVenueWidget(snapshot.data);
+              } else if (snapshot.hasError) {
+                debugPrint('ah shit');
+                return Text('${snapshot.error}');
+              }
+              debugPrint('not yet');
+              return CircularProgressIndicator();
+            }
+
+        ),
+        Text('Widget 2'),
+        Flexible(
+            child: PagewiseListView(
+              pageSize: pageSize,
+              padding: EdgeInsets.all(15.0),
+              itemBuilder: (context, entry, index) {
+                return beer(entry);
+              },
+              pageFuture: (pageIndex) {
+                return fetchBeers(page: pageIndex);
+              }
+            ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildList(Iterable<Beer> beers) =>
+      ListView(
+        children: List<ListTile>.from(beers.map((x) => beer(x))),
+      );
+
+  ListTile beer(Beer beer) =>
+      ListTile(
+          title: Text(
+            beer.name,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+            ),
+          ),
+          subtitle: Text(beer.manufacturer.name),
+          leading: (beer.logoUrl != null && beer.logoUrl != '') ? Image.network(
+            beer.logoUrl,
+            height: 50,
+          ) : null,
+          trailing: Icon(
+            BeerIcons.beer,
+            color: beer.color,
+          )
+      );
+
+  DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
+    return DropdownButton<Venue>(
+      items: venues.map(
+              (venue) =>
+              DropdownMenuItem<Venue>(
+                value: venue,
+                child: Text(venue.name),
+              )
+      ).toList(),
+      value: chosenVenue,
+      onChanged: (Venue newValue) {
+        debugPrint('Chosen venue ${newValue.name}');
+        setState(() {
+          chosenVenue = newValue;
+        });
+      },
+    );
+  }
 }
