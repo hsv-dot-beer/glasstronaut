@@ -26,6 +26,9 @@ dependencies:
   # web!
   http: ^0.12.0+1
 
+  # lazy loading
+  flutter_pagewise:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
