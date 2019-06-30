@@ -216,11 +216,11 @@ class JsonData {
     beerActive = json['beer_active'];
     isHomebrew = json['is_homebrew'];
     ratingCount = json['rating_count'];
-    ratingScore = json['rating_score'];
+    ratingScore = json['rating_score'].toDouble();
     beerLabelHd = json['beer_label_hd'];
     beerDescription = json['beer_description'];
     isInProduction = json['is_in_production'];
-    weightedRatingScore = json['weighted_rating_score'];
+    weightedRatingScore = json['weighted_rating_score'].toDouble();
   }
 
 }
