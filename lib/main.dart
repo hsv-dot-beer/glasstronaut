@@ -15,6 +15,34 @@ void main() => runApp(MyApp());
 
 final int pageSize = 25;
 
+Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
+
+  debugPrint('making HTTP request');
+  String url;
+  if (activeVenue != null) {
+    url = 'https://dev.hsv.beer/api/v1/venues/${activeVenue.id}/beers/?on_tap=True';
+  } else {
+    url = 'https://dev.hsv.beer/api/v1/beers/?on_tap=True';
+  }
+  if (page != 0) {
+    url += '&page=${page + 1}';
+  }
+  debugPrint('url: $url');
+  final response = await http.get(url);
+
+  List<Beer> beers = new List<Beer>();
+
+  if (response.statusCode == 200) {
+    final decodedJson = json.decode(utf8.decode(response.bodyBytes));
+    beers = new List<Beer>.from(decodedJson['results'].map((x) => Beer.fromJson(x)));
+  } else {
+    throw Exception('Beers failed to load! ' + response.body);
+  }
+  debugPrint('done parsing');
+  return beers;
+}
+
+
 class MyApp extends StatelessWidget {
 
   @override
@@ -35,28 +63,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
-
-
-Future<List<Beer>> fetchBeers({int page = 0}) async {
-  debugPrint('making HTTP request');
-  String url;
-
-  // Django page offsets are 1-based, while the page lib is zero-based
-  url = 'http://dev.hsv.beer/api/v1/beers/?on_tap=True&page=${page + 1}';
-  debugPrint('page: $page, url $url');
-  final response = await http.get(url);
-
-  List<Beer> beers = new List<Beer>();
-
-  if (response.statusCode == 200) {
-    final decodedJson = json.decode(utf8.decode(response.bodyBytes));
-    beers = new List<Beer>.from(decodedJson['results'].map((x) => Beer.fromJson(x)));
-  } else {
-    throw Exception('Beers failed to load! ' + response.body);
-  }
-  debugPrint('done parsing');
-  return beers;
 }
 
 
@@ -125,7 +131,7 @@ class _BeerWidgetState extends State<BeerWidget> {
                 return beer(entry);
               },
               pageFuture: (pageIndex) {
-                return fetchBeers(page: pageIndex);
+                return fetchBeers(page: pageIndex, activeVenue: chosenVenue);
               }
             ),
         ),
