@@ -35,31 +35,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-  Widget buildList(Iterable<Beer> beers) =>
-      ListView(
-        children: List<ListTile>.from(beers.map((x) => beer(x))),
-      );
-
-  ListTile beer(Beer beer) =>
-      ListTile(
-          title: Text(
-            beer.name,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-            ),
-          ),
-          subtitle: Text(beer.manufacturer.name),
-          leading: (beer.logoUrl != null && beer.logoUrl != '') ? Image.network(
-            beer.logoUrl,
-            height: 50,
-          ) : null,
-          trailing: Icon(
-            BeerIcons.beer,
-            color: beer.color,
-          )
-      );
 }
 
 
