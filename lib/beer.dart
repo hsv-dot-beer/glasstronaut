@@ -56,14 +56,11 @@ class Beer {
 
   Beer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    debugPrint('id $id');
     manufacturer = json['manufacturer'] != null
         ? new Manufacturer.fromJson(json['manufacturer'])
         : null;
     abv = json['abv'] == null ? Decimal.fromInt(0) : Decimal.parse(json['abv']);
-    debugPrint("abv $abv");
     colorSrm = json['color_srm'] == null ? Decimal.fromInt(0): Decimal.parse(json['color_srm']);
-    debugPrint("srm $colorSrm");
     colorSrmHtml = json['color_srm_html'];
     color = HideableHexColor(json['color_srm_html']);
     style = json['style'] != null ? new Style.fromJson(json['style']) : null;
@@ -95,7 +92,6 @@ class Beer {
     stemAndSteinPk = json['stem_and_stein_pk'];
     taplistIoPk = json['taplist_io_pk'];
     timeFirstSeen = json['time_first_seen'];
-    debugPrint('done');
   }
 
 }
