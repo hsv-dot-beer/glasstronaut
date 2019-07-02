@@ -1,11 +1,10 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:http/http.dart' as http;
 
 import 'beer.dart';
 import 'beer_icons.dart';
@@ -16,11 +15,11 @@ void main() => runApp(MyApp());
 final int pageSize = 25;
 
 Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
-
   debugPrint('making HTTP request');
   String url;
   if (activeVenue != null) {
-    url = 'https://dev.hsv.beer/api/v1/venues/${activeVenue.id}/beers/?on_tap=True';
+    url =
+        'https://dev.hsv.beer/api/v1/venues/${activeVenue.id}/beers/?on_tap=True';
   } else {
     url = 'https://dev.hsv.beer/api/v1/beers/?on_tap=True';
   }
@@ -34,7 +33,8 @@ Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
 
   if (response.statusCode == 200) {
     final decodedJson = json.decode(utf8.decode(response.bodyBytes));
-    beers = new List<Beer>.from(decodedJson['results'].map((x) => Beer.fromJson(x)));
+    beers = new List<Beer>.from(
+        decodedJson['results'].map((x) => Beer.fromJson(x)));
   } else {
     throw Exception('Beers failed to load! ' + response.body);
   }
@@ -42,9 +42,7 @@ Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
   return beers;
 }
 
-
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     debugPrint('Hi!');
@@ -56,15 +54,13 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('hsv.beer'),
-        ),
-        body: BeerWidget()
-      ),
+          appBar: AppBar(
+            title: Text('hsv.beer'),
+          ),
+          body: BeerWidget()),
     );
   }
 }
-
 
 Future<List<Venue>> fetchVenues() async {
   debugPrint('getting venues');
@@ -76,7 +72,8 @@ Future<List<Venue>> fetchVenues() async {
 
   if (response.statusCode == 200) {
     final decodedJson = json.decode(utf8.decode(response.bodyBytes));
-    venues = new List<Venue>.from(decodedJson['results'].map((x) => Venue.fromJson(x)));
+    venues = new List<Venue>.from(
+        decodedJson['results'].map((x) => Venue.fromJson(x)));
   } else {
     throw Exception('Venues failed to load! ' + response.body);
   }
@@ -89,15 +86,13 @@ class BeerWidget extends StatefulWidget {
 
   @override
   _BeerWidgetState createState() => _BeerWidgetState(
-    beers: fetchBeers(),
-    venues: fetchVenues(),
-  );
-
+        beers: fetchBeers(),
+        venues: fetchVenues(),
+      );
 }
 
 class _BeerWidgetState extends State<BeerWidget> {
-
-  _BeerWidgetState({this.beers, this.venues}): super();
+  _BeerWidgetState({this.beers, this.venues}) : super();
 
   Venue chosenVenue;
   Future<List<Beer>> beers;
@@ -129,9 +124,7 @@ class _BeerWidgetState extends State<BeerWidget> {
               }
               debugPrint('not yet');
               return CircularProgressIndicator();
-            }
-
-        ),
+            }),
         Text('Widget 2'),
         Flexible(
           child: RefreshIndicator(
@@ -152,40 +145,38 @@ class _BeerWidgetState extends State<BeerWidget> {
     );
   }
 
-  Widget buildList(Iterable<Beer> beers) =>
-      ListView(
+  Widget buildList(Iterable<Beer> beers) => ListView(
         children: List<ListTile>.from(beers.map((x) => beer(x))),
       );
 
-  ListTile beer(Beer beer) =>
-      ListTile(
-          title: Text(
-            beer.name,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-            ),
-          ),
-          subtitle: Text(beer.manufacturer.name),
-          leading: (beer.logoUrl != null && beer.logoUrl != '') ? Image.network(
-            beer.logoUrl,
-            height: 50,
-          ) : null,
-          trailing: Icon(
-            BeerIcons.beer,
-            color: beer.color,
-          )
-      );
+  ListTile beer(Beer beer) => ListTile(
+      title: Text(
+        beer.name,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 20,
+        ),
+      ),
+      subtitle: Text(beer.manufacturer.name),
+      leading: (beer.logoUrl != null && beer.logoUrl != '')
+          ? Image.network(
+              beer.logoUrl,
+              height: 50,
+            )
+          : null,
+      trailing: Icon(
+        BeerIcons.beer,
+        color: beer.color,
+      ));
 
   DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
     return DropdownButton<Venue>(
-      items: venues.map(
-              (venue) =>
-              DropdownMenuItem<Venue>(
+      items: venues
+          .map((venue) => DropdownMenuItem<Venue>(
                 value: venue,
                 child: Text(venue.name),
-              )
-      ).toList(),
+              ))
+          .toList(),
       value: chosenVenue,
       onChanged: (Venue newValue) {
         debugPrint('Chosen venue ${newValue.name}');
