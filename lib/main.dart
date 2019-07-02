@@ -15,7 +15,6 @@ void main() => runApp(MyApp());
 final int pageSize = 25;
 
 Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
-  debugPrint('making HTTP request');
   String url;
   if (activeVenue != null) {
     url =
@@ -38,14 +37,12 @@ Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
   } else {
     throw Exception('Beers failed to load! ' + response.body);
   }
-  debugPrint('done parsing');
   return beers;
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    debugPrint('Hi!');
     return MaterialApp(
       title: 'hsv.beer',
       theme: new ThemeData(
@@ -63,7 +60,6 @@ class MyApp extends StatelessWidget {
 }
 
 Future<List<Venue>> fetchVenues() async {
-  debugPrint('getting venues');
   final response = await http.get(
     'http://dev.hsv.beer/api/v1/venues/',
   );
@@ -75,9 +71,9 @@ Future<List<Venue>> fetchVenues() async {
     venues = new List<Venue>.from(
         decodedJson['results'].map((x) => Venue.fromJson(x)));
   } else {
+    // TODO: replace with a snack bar or something
     throw Exception('Venues failed to load! ' + response.body);
   }
-  debugPrint('done parsing, venues $venues');
   return venues;
 }
 
@@ -119,13 +115,11 @@ class _BeerWidgetState extends State<BeerWidget> {
                 debugPrint('venues: $snapshot');
                 return buildVenueWidget(snapshot.data);
               } else if (snapshot.hasError) {
-                debugPrint('ah shit');
                 return Text('${snapshot.error}');
               }
-              debugPrint('not yet');
               return CircularProgressIndicator();
             }),
-        Text('Widget 2'),
+        Text('Search box will go here'),
         Flexible(
           child: RefreshIndicator(
             child: PagewiseListView(
@@ -179,7 +173,6 @@ class _BeerWidgetState extends State<BeerWidget> {
           .toList(),
       value: chosenVenue,
       onChanged: (Venue newValue) {
-        debugPrint('Chosen venue ${newValue.name}');
         setState(() {
           chosenVenue = newValue;
           this._pageLoadController.reset();
