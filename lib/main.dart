@@ -104,16 +104,17 @@ class _BeerWidgetState extends State<BeerWidget> {
   Future<List<Venue>> venues;
   String searchString = '';
 
-  final _pageLoadController = PagewiseLoadController(
-    pageSize: pageSize,
-    pageFuture: getBeers,
-  );
+  PagewiseLoadController _pageLoadController;
 
-  static Future<List<Beer>> getBeers(int page) {
-    return fetchBeers(page: page);
+  Future<List<Beer>> getBeers(int page) {
+    return fetchBeers(page: page, activeVenue: this.chosenVenue);
   }
 
   Widget build(BuildContext context) {
+    this._pageLoadController = PagewiseLoadController(
+      pageSize: pageSize,
+      pageFuture: getBeers,
+    );
     return Column(
       children: <Widget>[
         FutureBuilder<List<Venue>>(
@@ -190,6 +191,7 @@ class _BeerWidgetState extends State<BeerWidget> {
         debugPrint('Chosen venue ${newValue.name}');
         setState(() {
           chosenVenue = newValue;
+          this._pageLoadController.reset();
         });
       },
     );
