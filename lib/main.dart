@@ -156,6 +156,7 @@ class _BeerWidgetState extends State<BeerWidget> {
           ? Image.network(
               beer.logoUrl,
               height: 50,
+              width: 50,
             )
           : null,
       trailing: Icon(
