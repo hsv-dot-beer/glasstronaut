@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'beer.dart';
 import 'beer_icons.dart';
 import 'venue.dart';
+import 'beer_detail.dart';
 
 void main() => runApp(MyApp());
 
@@ -162,7 +163,14 @@ class _BeerWidgetState extends State<BeerWidget> {
       trailing: Icon(
         BeerIcons.beer,
         color: beer.color,
-      ));
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BeerDetailView(beer: beer)),
+        );
+      },
+  );
 
   DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
     return DropdownButton<Venue>(
