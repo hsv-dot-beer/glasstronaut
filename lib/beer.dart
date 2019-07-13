@@ -1,9 +1,9 @@
 import 'package:decimal/decimal.dart';
-import 'package:flutter/foundation.dart';
-import 'manufacturer.dart';
+
 import 'color.dart';
-import 'venue.dart';
+import 'manufacturer.dart';
 import 'style.dart';
+import 'venue.dart';
 
 class Beer {
   int id;
@@ -32,27 +32,27 @@ class Beer {
 
   Beer(
       {this.id,
-        this.manufacturer,
-        this.abv,
-        this.colorSrm,
-        this.colorSrmHtml,
-        this.style,
-        this.venues,
-        this.prices,
-        this.untappdMetadata,
-        this.name,
-        this.inProduction,
-        this.ibu,
-        this.untappdUrl,
-        this.beerAdvocateUrl,
-        this.rateBeerUrl,
-        this.logoUrl,
-        this.manufacturerUrl,
-        this.automaticUpdatesBlocked,
-        this.taphunterUrl,
-        this.stemAndSteinPk,
-        this.taplistIoPk,
-        this.timeFirstSeen});
+      this.manufacturer,
+      this.abv,
+      this.colorSrm,
+      this.colorSrmHtml,
+      this.style,
+      this.venues,
+      this.prices,
+      this.untappdMetadata,
+      this.name,
+      this.inProduction,
+      this.ibu,
+      this.untappdUrl,
+      this.beerAdvocateUrl,
+      this.rateBeerUrl,
+      this.logoUrl,
+      this.manufacturerUrl,
+      this.automaticUpdatesBlocked,
+      this.taphunterUrl,
+      this.stemAndSteinPk,
+      this.taplistIoPk,
+      this.timeFirstSeen});
 
   Beer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -60,7 +60,9 @@ class Beer {
         ? new Manufacturer.fromJson(json['manufacturer'])
         : null;
     abv = json['abv'] == null ? Decimal.fromInt(0) : Decimal.parse(json['abv']);
-    colorSrm = json['color_srm'] == null ? Decimal.fromInt(0): Decimal.parse(json['color_srm']);
+    colorSrm = json['color_srm'] == null
+        ? Decimal.fromInt(0)
+        : Decimal.parse(json['color_srm']);
     colorSrmHtml = json['color_srm_html'];
     color = HideableHexColor(json['color_srm_html']);
     style = json['style'] != null ? new Style.fromJson(json['style']) : null;
@@ -93,7 +95,6 @@ class Beer {
     taplistIoPk = json['taplist_io_pk'];
     timeFirstSeen = json['time_first_seen'];
   }
-
 }
 
 class Prices {
@@ -153,7 +154,6 @@ class UntappdMetadata {
         : null;
     timestamp = json['timestamp'];
   }
-
 }
 
 class JsonData {
@@ -178,23 +178,23 @@ class JsonData {
 
   JsonData(
       {this.bid,
-        this.beerAbv,
-        this.beerIbu,
-        this.beerName,
-        this.beerSlug,
-        this.wishList,
-        this.beerLabel,
-        this.beerStyle,
-        this.createdAt,
-        this.authRating,
-        this.beerActive,
-        this.isHomebrew,
-        this.ratingCount,
-        this.ratingScore,
-        this.beerLabelHd,
-        this.beerDescription,
-        this.isInProduction,
-        this.weightedRatingScore});
+      this.beerAbv,
+      this.beerIbu,
+      this.beerName,
+      this.beerSlug,
+      this.wishList,
+      this.beerLabel,
+      this.beerStyle,
+      this.createdAt,
+      this.authRating,
+      this.beerActive,
+      this.isHomebrew,
+      this.ratingCount,
+      this.ratingScore,
+      this.beerLabelHd,
+      this.beerDescription,
+      this.isInProduction,
+      this.weightedRatingScore});
 
   JsonData.fromJson(Map<String, dynamic> json) {
     bid = json['bid'];
@@ -218,5 +218,4 @@ class JsonData {
     isInProduction = json['is_in_production'];
     weightedRatingScore = json['weighted_rating_score'].toDouble();
   }
-
 }

@@ -1,6 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter/foundation.dart';
 import 'package:beers/venue.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Venue from JSON is valid', () {

@@ -1,6 +1,6 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:decimal/decimal.dart';
 
 import 'beer.dart';
 import 'beer_icons.dart';
@@ -72,18 +72,13 @@ class BeerDetailView extends StatelessWidget {
 
     if (this.beer.untappdMetadata != null) {
       Card untappdCard = Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              title: Text('Untappd Information'),
-              subtitle: Text(
-                'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} (${this.beer.untappdMetadata.jsonData.ratingCount} ratings)'
-              ),
-            )
-          ]
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+        ListTile(
+          title: Text('Untappd Information'),
+          subtitle: Text(
+              'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} (${this.beer.untappdMetadata.jsonData.ratingCount} ratings)'),
         )
-      );
+      ]));
 
       children.add(untappdCard);
     }
@@ -96,10 +91,10 @@ class BeerDetailView extends StatelessWidget {
         brightness: Brightness.light,
       ),
       home: Scaffold(
-          appBar: AppBar(
-            title: Text(this.beer.name),
-          ),
-          body: Column(children: children),
+        appBar: AppBar(
+          title: Text(this.beer.name),
+        ),
+        body: Column(children: children),
       ),
     );
   }

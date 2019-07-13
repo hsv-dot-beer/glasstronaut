@@ -7,9 +7,9 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:http/http.dart' as http;
 
 import 'beer.dart';
+import 'beer_detail.dart';
 import 'beer_icons.dart';
 import 'venue.dart';
-import 'beer_detail.dart';
 
 void main() => runApp(MyApp());
 
@@ -145,32 +145,32 @@ class _BeerWidgetState extends State<BeerWidget> {
       );
 
   ListTile beer(Beer beer) => ListTile(
-      title: Text(
-        beer.name,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 20,
+        title: Text(
+          beer.name,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+          ),
         ),
-      ),
-      subtitle: Text(beer.manufacturer.name),
-      leading: (beer.logoUrl != null && beer.logoUrl != '')
-          ? Image.network(
-              beer.logoUrl,
-              height: 50,
-              width: 50,
-            )
-          : null,
-      trailing: Icon(
-        BeerIcons.beer,
-        color: beer.color,
-      ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeerDetailView(beer: beer)),
-        );
-      },
-  );
+        subtitle: Text(beer.manufacturer.name),
+        leading: (beer.logoUrl != null && beer.logoUrl != '')
+            ? Image.network(
+                beer.logoUrl,
+                height: 50,
+                width: 50,
+              )
+            : null,
+        trailing: Icon(
+          BeerIcons.beer,
+          color: beer.color,
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BeerDetailView(beer: beer)),
+          );
+        },
+      );
 
   DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
     return DropdownButton<Venue>(
