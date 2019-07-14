@@ -110,6 +110,45 @@ class BeerDetailView extends StatelessWidget {
       children.add(untappdCard);
     }
 
+    Map<String, String> urls = {
+      'Untappd': this.beer.untappdUrl,
+      'BeerAdvocate': this.beer.beerAdvocateUrl,
+      'RateBeer': this.beer.rateBeerUrl,
+      'TapHunter': this.beer.taphunterUrl,
+      'The Stem and Stein': (this.beer.stemAndSteinPk != null)
+          ? 'https://thestemandstein.com/Home/BeerDetails/${this.beer.stemAndSteinPk}'
+          : '',
+    };
+    List<FlatButton> beerActions = [];
+    urls.forEach((source, url) {
+      if (url != null && url != '') {
+        beerActions.add(
+          FlatButton(
+            child: Text(source),
+            onPressed: () {
+              _launchURL(url);
+            },
+          ),
+        );
+      }
+    });
+
+    if (beerActions != []) {
+      children.add(Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(title: Text('Learn More')),
+            ButtonTheme.bar(
+              child: ButtonBar(
+                children: beerActions,
+              ),
+            ),
+          ],
+        ),
+      ));
+    }
+
     return MaterialApp(
       title: this.beer.name,
       theme: new ThemeData(
