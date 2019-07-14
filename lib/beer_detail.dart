@@ -91,12 +91,19 @@ class BeerDetailView extends StatelessWidget {
     List<Widget> children = [beerCard, breweryCard];
 
     if (this.beer.untappdMetadata != null) {
+      String metadataDetails =
+          'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} (${this.beer.untappdMetadata.jsonData.ratingCount} ratings)';
+      if (this.beer.untappdMetadata.jsonData.isHomebrew != 0) {
+        metadataDetails += '\nHomebrew';
+      }
+      if (this.beer.untappdMetadata.jsonData.isInProduction == 0) {
+        metadataDetails += '\nOut of Production';
+      }
       Card untappdCard = Card(
           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         ListTile(
           title: Text('Untappd Information'),
-          subtitle: Text(
-              'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} (${this.beer.untappdMetadata.jsonData.ratingCount} ratings)'),
+          subtitle: Text(metadataDetails),
         )
       ]));
 
