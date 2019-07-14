@@ -24,10 +24,10 @@ class BeerDetailView extends StatelessWidget {
       ListTile(
         leading: (this.beer.logoUrl != null && this.beer.logoUrl != '')
             ? Image.network(
-          this.beer.logoUrl,
-          height: 50,
-          width: 50,
-        )
+                this.beer.logoUrl,
+                height: 50,
+                width: 50,
+              )
             : null,
         trailing: Icon(
           BeerIcons.beer,
@@ -40,12 +40,15 @@ class BeerDetailView extends StatelessWidget {
 
     if (this.beer.manufacturerUrl != null && this.beer.manufacturerUrl != '') {
       beerCardChildren.add(
-        ButtonTheme.bar( // make buttons use the appropriate styles for cards
+        ButtonTheme.bar(
+          // make buttons use the appropriate styles for cards
           child: ButtonBar(
             children: <Widget>[
               FlatButton(
                 child: const Text('View on the web'),
-                onPressed: () { _launchURL(this.beer.manufacturerUrl); },
+                onPressed: () {
+                  _launchURL(this.beer.manufacturerUrl);
+                },
               ),
             ],
           ),
