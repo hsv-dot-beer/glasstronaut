@@ -125,13 +125,13 @@ class Prices {
 
 class ServingSize {
   String name;
-  String volumeOz;
+  Decimal volumeOz;
 
   ServingSize({this.name, this.volumeOz});
 
   ServingSize.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    volumeOz = json['volume_oz'];
+    volumeOz = Decimal.parse(json['volume_oz']);
   }
 
   Map<String, dynamic> toJson() {
