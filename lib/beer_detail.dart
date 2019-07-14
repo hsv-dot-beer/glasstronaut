@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -90,6 +92,7 @@ class BeerDetailView extends StatelessWidget {
 
     List<Widget> children = [beerCard, breweryCard];
 
+    // Untappd Metadata
     if (this.beer.untappdMetadata != null) {
       String metadataDetails =
           'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} (${this.beer.untappdMetadata.jsonData.ratingCount} ratings)';
@@ -110,6 +113,82 @@ class BeerDetailView extends StatelessWidget {
       children.add(untappdCard);
     }
 
+    // Prices
+    if (this.beer.prices.isNotEmpty) {
+      List<String> venuesOnTap =
+          new List<String>.from(beer.venues.map((v) => v.name));
+      // Sort our prices by venue
+      SplayTreeMap<String, List<Prices>> prices = new SplayTreeMap();
+      this.beer.prices.forEach((price) {
+        // Is it actually on tap?
+        if (venuesOnTap.contains(price.venue)) {
+          if (prices.containsKey(price.venue)) {
+            prices[price.venue].add(price);
+          } else {
+            prices[price.venue] = <Prices>[price];
+          }
+        }
+      });
+      // because we're using a SplayTreeMap, the map is already sorted
+      // by key for us
+
+      // next up: create the card
+      List<Widget> rows = <Widget>[
+        // TODO style the hell out of this
+        Text('Find it on tap at'),
+      ];
+      prices.forEach((venue, venuePrices) {
+        // sort the prices by serving size
+        venuePrices.sort((a, b) {
+          return (a.servingSize.volumeOz - b.servingSize.volumeOz).toInt();
+        });
+        // Card layout:
+        // two rows per venue
+        // First row is venue name, second is prices
+        // Each price row has a column for each price
+        // each column has two Text()s, one for size and one for price
+        List<Column> columns = [];
+        venuePrices.forEach((p) {
+          // TODO figure out spacing
+          columns.add(Column(
+            children: <Widget>[
+              Text('${p.servingSize.volumeOz} oz'),
+              Text('\$${p.price}'),
+            ],
+          ));
+        });
+        rows.add(Row(children: <Widget>[
+          Text(venue),
+        ]));
+        rows.add(Row(
+          children: columns,
+        ));
+      });
+
+      // now look at venues which don't have pricing available
+      beer.venues.forEach((v) {
+        if (!prices.containsKey(v.name)) {
+          rows.add(
+            Row(children: <Widget>[
+              Text(v.name),
+            ]),
+          );
+          rows.add(
+            Row(children: <Widget>[
+              Text('(No pricing available)'),
+            ]),
+          );
+        }
+      });
+
+      children.add(Card(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: rows,
+      )));
+    }
+
+    // Last card: find more links
     Map<String, String> urls = {
       'Untappd': this.beer.untappdUrl,
       'BeerAdvocate': this.beer.beerAdvocateUrl,
