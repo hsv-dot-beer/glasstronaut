@@ -15,18 +15,18 @@ class Manufacturer {
 
   Manufacturer(
       {this.id,
-        this.name,
-        this.url,
-        this.location,
-        this.logoUrl,
-        this.facebookUrl,
-        this.twitterHandle,
-        this.instagramHandle,
-        this.untappdUrl,
-        this.automaticUpdatesBlocked,
-        this.taphunterUrl,
-        this.taplistIoPk,
-        this.timeFirstSeen});
+      this.name,
+      this.url,
+      this.location,
+      this.logoUrl,
+      this.facebookUrl,
+      this.twitterHandle,
+      this.instagramHandle,
+      this.untappdUrl,
+      this.automaticUpdatesBlocked,
+      this.taphunterUrl,
+      this.taplistIoPk,
+      this.timeFirstSeen});
 
   Manufacturer.fromJson(Map<String, dynamic> json) {
     id = json['id'];

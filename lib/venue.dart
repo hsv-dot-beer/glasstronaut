@@ -1,4 +1,3 @@
-
 class Venue {
   int id;
   String timeZone;
@@ -20,25 +19,26 @@ class Venue {
   String logoUrl;
   String slug;
 
-  Venue({this.id,
-    this.timeZone,
-    this.tapListProviderDisplay,
-    this.name,
-    this.address,
-    this.city,
-    this.state,
-    this.postalCode,
-    this.country,
-    this.website,
-    this.facebookPage,
-    this.twitterHandle,
-    this.instagramHandle,
-    this.tapListProvider,
-    this.untappdUrl,
-    this.email,
-    this.phoneNumber,
-    this.logoUrl,
-    this.slug});
+  Venue(
+      {this.id,
+      this.timeZone,
+      this.tapListProviderDisplay,
+      this.name,
+      this.address,
+      this.city,
+      this.state,
+      this.postalCode,
+      this.country,
+      this.website,
+      this.facebookPage,
+      this.twitterHandle,
+      this.instagramHandle,
+      this.tapListProvider,
+      this.untappdUrl,
+      this.email,
+      this.phoneNumber,
+      this.logoUrl,
+      this.slug});
 
   Venue.fromJson(Map<String, dynamic> json) {
     id = json['id'];

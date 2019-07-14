@@ -1,12 +1,14 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:beers/style.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Style from JSON is valid', () {
     final json = {
       "id": 537,
       "alternate_names": [
-        "style1", "style2", "style3",
+        "style1",
+        "style2",
+        "style3",
       ],
       "name": "Bock - Hell / Maibock / Lentebock"
     };
