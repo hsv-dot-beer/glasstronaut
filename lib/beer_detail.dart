@@ -12,7 +12,7 @@ class BeerDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String subtitle = '${this.beer.style.name}';
+    String subtitle = '${this.beer.style != null ? this.beer.style.name : ''}';
     if (this.beer.abv != Decimal.fromInt(0) && this.beer.ibu != null) {
       subtitle += '\n${this.beer.abv}% ABV';
     }
