@@ -134,8 +134,13 @@ class BeerDetailView extends StatelessWidget {
 
       // next up: create the card
       List<Widget> rows = <Widget>[
-        // TODO style the hell out of this
-        Text('Find it on tap at'),
+        // TODO improve styling
+        Text(
+          'Find it on tap at',
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
       ];
       prices.forEach((venue, venuePrices) {
         // sort the prices by serving size
@@ -158,9 +163,10 @@ class BeerDetailView extends StatelessWidget {
           ));
         });
         rows.add(Row(children: <Widget>[
-          Text(venue),
+          Text('\n$venue'),
         ]));
         rows.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: columns,
         ));
       });
@@ -170,7 +176,8 @@ class BeerDetailView extends StatelessWidget {
         if (!prices.containsKey(v.name)) {
           rows.add(
             Row(children: <Widget>[
-              Text(v.name),
+              // TODO find a less dumb way of doing this
+              Text('\n${v.name}'),
             ]),
           );
           rows.add(
@@ -182,10 +189,14 @@ class BeerDetailView extends StatelessWidget {
       });
 
       children.add(Card(
+        child: Container(
+          padding: EdgeInsets.all(16),
           child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: rows,
-      )));
+            mainAxisSize: MainAxisSize.min,
+            children: rows,
+          ),
+        ),
+      ));
     }
 
     // Last card: find more links
