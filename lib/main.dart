@@ -15,7 +15,8 @@ void main() => runApp(MyApp());
 
 final int pageSize = 25;
 
-Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
+Future<List<Beer>> fetchBeers(
+    {int page = 0, Venue activeVenue, String search}) async {
   String url;
   if (activeVenue != null) {
     url =
@@ -25,6 +26,9 @@ Future<List<Beer>> fetchBeers({int page = 0, Venue activeVenue}) async {
   }
   if (page != 0) {
     url += '&page=${page + 1}';
+  }
+  if (search != '') {
+    url += '&search=$search';
   }
   debugPrint('url: $url');
   final response = await http.get(url);
@@ -95,11 +99,13 @@ class _BeerWidgetState extends State<BeerWidget> {
   Future<List<Beer>> beers;
   Future<List<Venue>> venues;
   String searchString = '';
+  TextEditingController editingController = TextEditingController();
 
   PagewiseLoadController _pageLoadController;
 
   Future<List<Beer>> getBeers(int page) {
-    return fetchBeers(page: page, activeVenue: this.chosenVenue);
+    return fetchBeers(
+        page: page, activeVenue: this.chosenVenue, search: this.searchString);
   }
 
   Widget build(BuildContext context) {
@@ -109,18 +115,43 @@ class _BeerWidgetState extends State<BeerWidget> {
     );
     return Column(
       children: <Widget>[
-        FutureBuilder<List<Venue>>(
-            future: venues,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                debugPrint('venues: $snapshot');
-                return buildVenueWidget(snapshot.data);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              return CircularProgressIndicator();
-            }),
-        Text('Search box will go here'),
+        Row(
+          children: <Widget>[
+            FutureBuilder<List<Venue>>(
+                future: venues,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    debugPrint('venues: $snapshot');
+                    return buildVenueWidget(snapshot.data);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return CircularProgressIndicator();
+                }),
+          ],
+        ),
+        Row(children: <Widget>[
+          Flexible(
+            child: TextField(
+              controller: editingController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                ),
+              ),
+              onChanged: (value) {
+                searchString = value;
+                Timer(const Duration(milliseconds: 400), () {
+                  if (this.searchString == value) {
+                    // give the user 400 msec to decide they're done searching
+                    this._pageLoadController.reset();
+                  }
+                });
+              },
+            ),
+          ),
+        ]),
         Flexible(
           child: RefreshIndicator(
             child: PagewiseListView(
@@ -172,21 +203,38 @@ class _BeerWidgetState extends State<BeerWidget> {
         },
       );
 
-  DropdownButton<Venue> buildVenueWidget(List<Venue> venues) {
-    return DropdownButton<Venue>(
-      items: venues
-          .map((venue) => DropdownMenuItem<Venue>(
-                value: venue,
-                child: Text(venue.name),
-              ))
-          .toList(),
-      value: chosenVenue,
-      onChanged: (Venue newValue) {
-        setState(() {
-          chosenVenue = newValue;
-          this._pageLoadController.reset();
-        });
-      },
+  Widget buildVenueWidget(List<Venue> venues) {
+    return Container(
+      child: Flexible(
+        child: InputDecorator(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<Venue>(
+              items: venues
+                  .map((venue) => DropdownMenuItem<Venue>(
+                        value: venue,
+                        child: Text(venue.name),
+                      ))
+                  .toList(),
+              value: chosenVenue,
+              onChanged: (Venue newValue) {
+                setState(() {
+                  chosenVenue = newValue;
+                  this._pageLoadController.reset();
+                });
+              },
+              isDense: true,
+            ),
+          ),
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.local_bar),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            ),
+
+          ),
+        ),
+
+      ),
     );
   }
 }
