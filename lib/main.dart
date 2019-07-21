@@ -209,12 +209,18 @@ class _BeerWidgetState extends State<BeerWidget> {
         child: InputDecorator(
           child: DropdownButtonHideUnderline(
             child: DropdownButton<Venue>(
-              items: venues
-                  .map((venue) => DropdownMenuItem<Venue>(
-                        value: venue,
-                        child: Text(venue.name),
-                      ))
-                  .toList(),
+              items: <DropdownMenuItem<Venue>>[
+                    DropdownMenuItem<Venue>(
+                      value: null,
+                      child: Text('Select a taproom'),
+                    )
+                  ] +
+                  venues
+                      .map((venue) => DropdownMenuItem<Venue>(
+                            value: venue,
+                            child: Text(venue.name),
+                          ))
+                      .toList(),
               value: chosenVenue,
               onChanged: (Venue newValue) {
                 setState(() {
@@ -230,10 +236,8 @@ class _BeerWidgetState extends State<BeerWidget> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
             ),
-
           ),
         ),
-
       ),
     );
   }
