@@ -1,4 +1,4 @@
-name: hsv.beer
+name: beers
 description: Beers on Tap in Huntsville
 
 # The following defines the version and build number for your application.
@@ -33,6 +33,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons:
 
 
 # For information on the generic Dart part of this file, see the
@@ -81,3 +83,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#ffffff"
