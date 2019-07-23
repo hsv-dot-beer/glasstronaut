@@ -114,7 +114,7 @@ class BeerDetailView extends StatelessWidget {
     }
 
     // Prices
-    if (this.beer.prices.isNotEmpty) {
+    if (this.beer.venues.isNotEmpty) {
       List<String> venuesOnTap =
           new List<String>.from(beer.venues.map((v) => v.name));
       // Sort our prices by venue
