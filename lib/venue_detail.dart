@@ -65,27 +65,25 @@ class VenueDetailView extends StatelessWidget {
           title: Text(this.venue.address),
           subtitle: Text(
               '${this.venue.city}, ${this.venue.state} ${this.venue.postalCode}'),
-          trailing: IconButton(
-            icon: Icon(
+          trailing: Icon(
               Icons.map,
               color: Colors.blue,
             ),
-            onPressed: () {
-              // TODO check for iOS and try Google Maps or Apple Maps directly
-              void _launchMapsUrl() async {
-                final queryParams =
-                    '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}';
-                final url =
-                    'https://www.google.com/maps/search/?api=1&query=$queryParams';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
+          onTap: () {
+            // TODO check for iOS and try Google Maps or Apple Maps directly
+            void _launchMapsUrl() async {
+              final queryParams =
+                  '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}';
+              final url =
+                  'https://www.google.com/maps/search/?api=1&query=$queryParams';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
               }
-              _launchMapsUrl();
-            },
-          ),
+            }
+            _launchMapsUrl();
+          },
         ),
       );
       venueCards.add(addressCard);
@@ -95,26 +93,48 @@ class VenueDetailView extends StatelessWidget {
     if (this.venue.phoneNumber != '' && this.venue.phoneNumber != null) {
       Card phoneCard = Card(
           child: ListTile(
-        trailing: IconButton(
-            icon: Icon(
-              Icons.phone,
-              color: Colors.blue,
-            ),
-            onPressed: () {
-              void _launchPhoneUrl() async {
-                final url = 'tel:${this.venue.phoneNumber}';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              }
-
-              _launchPhoneUrl();
-            }),
+        trailing: Icon(
+          Icons.phone,
+          color: Colors.blue,
+        ),
         title: Text(this.venue.phoneNumber),
+        onTap: () {
+          void _launchPhoneUrl() async {
+            final url = 'tel:${this.venue.phoneNumber}';
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
+          }
+
+          _launchPhoneUrl();
+        },
       ));
       venueCards.add(phoneCard);
+    }
+
+    // web
+    if (this.venue.website != null && this.venue.website != '') {
+      Card webCard = Card(
+        child: ListTile(
+          title: Text(this.venue.website),
+          trailing: Icon(Icons.launch, color: Colors.blue),
+          onTap: () {
+            void _launchWebUrl() async {
+              final url = this.venue.website;
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            }
+
+            _launchWebUrl();
+          },
+        )
+      );
+      venueCards.add(webCard);
     }
 
     return MaterialApp(
