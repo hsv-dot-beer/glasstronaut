@@ -91,6 +91,32 @@ class VenueDetailView extends StatelessWidget {
       venueCards.add(addressCard);
     }
 
+    // next: phone
+    if (this.venue.phoneNumber != '' && this.venue.phoneNumber != null) {
+      Card phoneCard = Card(
+          child: ListTile(
+        trailing: IconButton(
+            icon: Icon(
+              Icons.phone,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              void _launchPhoneUrl() async {
+                final url = 'tel:${this.venue.phoneNumber}';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              }
+
+              _launchPhoneUrl();
+            }),
+        title: Text(this.venue.phoneNumber),
+      ));
+      venueCards.add(phoneCard);
+    }
+
     return MaterialApp(
       title: this.venue.name,
       theme: new ThemeData(
