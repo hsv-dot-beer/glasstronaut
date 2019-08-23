@@ -245,6 +245,14 @@ class _BeerWidgetState extends State<BeerWidget> {
                     context,
                     MaterialPageRoute(builder: (context) => VenueDetailView(venue: this.chosenVenue)),
                   );
+                } else {
+                  final snackBar = SnackBar(
+                    content: Text('Sorry, you must pick a venue first'),
+                  );
+
+                  // Find the Scaffold in the widget tree and use
+                  // it to show a SnackBar.
+                  Scaffold.of(context).showSnackBar(snackBar);
                 }
               },
             ),
