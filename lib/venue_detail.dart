@@ -1,5 +1,6 @@
 import 'venue.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VenueDetailView extends StatelessWidget{
 
@@ -35,7 +36,9 @@ class VenueDetailView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> venueCards = [];
     // Header: logo and name
+
     List<Widget> headerChildren = <Widget>[];
     if (this.venue.logoUrl != null && this.venue.logoUrl != '') {
       headerChildren.add(
@@ -53,7 +56,37 @@ class VenueDetailView extends StatelessWidget{
       ),
     );
 
+    venueCards.add(headerCard);
+
     // Next: address and maps
+    if (this.venue.address != '' && this.venue.address != null) {
+      Card addressCard = Card(
+        child: ListTile(
+          title: Text(this.venue.address),
+          subtitle: Text('${this.venue.city}, ${this.venue.state} ${this.venue.postalCode}'),
+          trailing: IconButton(
+            icon: Icon(
+              Icons.map,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              // TODO check for iOS and try Google Maps or Apple Maps directly
+              void _launchMapsUrl() async {
+                final queryParams = '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}';
+                final url = 'https://www.google.com/maps/search/?api=1&query=$queryParams';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              }
+              _launchMapsUrl();
+            },
+          ),
+        ),
+      );
+      venueCards.add(addressCard);
+    }
 
     return MaterialApp(
       title: this.venue.name,
@@ -66,7 +99,7 @@ class VenueDetailView extends StatelessWidget{
         appBar: AppBar(
           title: Text(this.venue.name),
         ),
-        body: Column(children: <Widget>[headerCard]),
+        body: Column(children: venueCards),
       ),
     );
   }
