@@ -1,12 +1,12 @@
-import 'venue.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class VenueDetailView extends StatelessWidget{
+import 'venue.dart';
 
+class VenueDetailView extends StatelessWidget {
   final Venue venue;
 
-  VenueDetailView({this.venue}): super();
+  VenueDetailView({this.venue}) : super();
 
   /*
    Rough thought on layout:
@@ -63,7 +63,8 @@ class VenueDetailView extends StatelessWidget{
       Card addressCard = Card(
         child: ListTile(
           title: Text(this.venue.address),
-          subtitle: Text('${this.venue.city}, ${this.venue.state} ${this.venue.postalCode}'),
+          subtitle: Text(
+              '${this.venue.city}, ${this.venue.state} ${this.venue.postalCode}'),
           trailing: IconButton(
             icon: Icon(
               Icons.map,
@@ -72,8 +73,10 @@ class VenueDetailView extends StatelessWidget{
             onPressed: () {
               // TODO check for iOS and try Google Maps or Apple Maps directly
               void _launchMapsUrl() async {
-                final queryParams = '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}';
-                final url = 'https://www.google.com/maps/search/?api=1&query=$queryParams';
+                final queryParams =
+                    '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}';
+                final url =
+                    'https://www.google.com/maps/search/?api=1&query=$queryParams';
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
