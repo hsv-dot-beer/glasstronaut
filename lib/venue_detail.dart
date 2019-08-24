@@ -47,11 +47,16 @@ class VenueDetailView extends StatelessWidget {
     }
     headerChildren.add(
       // TODO style this
-      Text(this.venue.name),
+      Text(
+        this.venue.name,
+        textAlign: TextAlign.center,
+        textScaleFactor: 2.0,
+      ),
     );
 
     Card headerCard = Card(
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: headerChildren,
       ),
     );
