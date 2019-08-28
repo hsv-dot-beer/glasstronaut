@@ -10,6 +10,7 @@ import 'beer.dart';
 import 'beer_detail.dart';
 import 'beer_icons.dart';
 import 'venue.dart';
+import 'venue_detail.dart';
 
 void main() => runApp(MyApp());
 
@@ -235,6 +236,25 @@ class _BeerWidgetState extends State<BeerWidget> {
             prefixIcon: Icon(Icons.local_bar),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.info),
+              onPressed: () {
+                if (this.chosenVenue != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VenueDetailView(venue: this.chosenVenue)),
+                  );
+                } else {
+                  final snackBar = SnackBar(
+                    content: Text('Sorry, you must pick a venue first'),
+                  );
+
+                  // Find the Scaffold in the widget tree and use
+                  // it to show a SnackBar.
+                  Scaffold.of(context).showSnackBar(snackBar);
+                }
+              },
             ),
           ),
         ),
