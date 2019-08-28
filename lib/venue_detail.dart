@@ -212,7 +212,9 @@ class VenueDetailView extends StatelessWidget {
         appBar: AppBar(
           title: Text(this.venue.name),
         ),
-        body: Column(children: venueCards),
+        body: ListView(
+          children: venueCards,
+        ),
       ),
     );
   }
