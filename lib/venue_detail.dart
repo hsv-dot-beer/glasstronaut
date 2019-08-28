@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,13 +26,12 @@ class VenueDetailView extends StatelessWidget {
    - Card (if phone present)
     - Phone number
     - Trailing icon: tel:<phone number>
-   - Card (if any social media present)
-    - Grid
-      - Web
-      - FB
-      - Twitter
-      - Instagram
-      - Untappd
+   - Social media cards (if present)
+    - Web
+    - FB
+    - Twitter
+    - Instagram
+    - Untappd
    - TODO if Chad wants to throw money at us: add downtown craft beer trail
 
    */
@@ -76,10 +77,29 @@ class VenueDetailView extends StatelessWidget {
             color: Colors.blue,
           ),
           onTap: () {
-            // TODO check for iOS and try Google Maps or Apple Maps directly
             void _launchMapsUrl() async {
-              final queryParams =
-                  '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}';
+              final queryParams = Uri.encodeComponent(
+                  '${this.venue.address},${this.venue.city},${this.venue.state},${this.venue.postalCode}');
+
+              if (Platform.isIOS) {
+                String googleUrl = 'comgooglemaps://?query=$queryParams';
+                String appleUrl =
+                    'https://maps.apple.com/?address=$queryParams';
+                if (await canLaunch("comgooglemaps://")) {
+                  debugPrint('launching via Google Maps');
+                  await launch(googleUrl);
+                  return;
+                } else if (await canLaunch(appleUrl)) {
+                  debugPrint('launching apple url');
+                  await launch(appleUrl);
+                  return;
+                } else {
+                  debugPrint('Falling back to google maps in browser');
+                }
+              }
+              // Not on iOS, so just fall back to launching a Google Maps URL
+              // and hoping the device will know what to do
+              // Spoiler alert: Android does
               final url =
                   'https://www.google.com/maps/search/?api=1&query=$queryParams';
               if (await canLaunch(url)) {
