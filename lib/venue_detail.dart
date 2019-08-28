@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'venue.dart';
@@ -71,9 +72,9 @@ class VenueDetailView extends StatelessWidget {
           subtitle: Text(
               '${this.venue.city}, ${this.venue.state} ${this.venue.postalCode}'),
           trailing: Icon(
-              Icons.map,
-              color: Colors.blue,
-            ),
+            Icons.map,
+            color: Colors.blue,
+          ),
           onTap: () {
             // TODO check for iOS and try Google Maps or Apple Maps directly
             void _launchMapsUrl() async {
@@ -87,6 +88,7 @@ class VenueDetailView extends StatelessWidget {
                 throw 'Could not launch $url';
               }
             }
+
             _launchMapsUrl();
           },
         ),
@@ -122,12 +124,50 @@ class VenueDetailView extends StatelessWidget {
     // web
     if (this.venue.website != null && this.venue.website != '') {
       Card webCard = Card(
-        child: ListTile(
-          title: Text(this.venue.website),
-          trailing: Icon(Icons.launch, color: Colors.blue),
+          child: ListTile(
+        title: Text(this.venue.website),
+        trailing: Icon(Icons.launch, color: Colors.blue),
+        onTap: () {
+          void _launchWebUrl() async {
+            final url = this.venue.website;
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+              throw 'Could not launch $url';
+            }
+          }
+
+          _launchWebUrl();
+        },
+      ));
+      venueCards.add(webCard);
+    }
+
+    Map<Icon, String> socialIcons = {
+      Icon(FontAwesomeIcons.facebook, color: Colors.blue):
+          this.venue.facebookPage,
+      Icon(FontAwesomeIcons.twitter, color: Colors.blue):
+          (this.venue.twitterHandle != null && this.venue.twitterHandle != '')
+              ? 'https://twitter.com/${this.venue.twitterHandle}'
+              : '',
+      Icon(FontAwesomeIcons.instagram, color: Colors.blue):
+          (this.venue.instagramHandle != null &&
+                  this.venue.instagramHandle != '')
+              ? 'https://instagram.com/${this.venue.instagramHandle}'
+              : '',
+      Icon(FontAwesomeIcons.untappd, color: Colors.blue): this.venue.untappdUrl,
+    };
+
+    socialIcons.forEach((key, value) {
+      // key is the icon, value is the URL
+      if (value != '') {
+        venueCards.add(Card(
+            child: ListTile(
+          title: Text(value),
+          trailing: key,
           onTap: () {
             void _launchWebUrl() async {
-              final url = this.venue.website;
+              final url = value;
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
@@ -137,10 +177,9 @@ class VenueDetailView extends StatelessWidget {
 
             _launchWebUrl();
           },
-        )
-      );
-      venueCards.add(webCard);
-    }
+        )));
+      }
+    });
 
     return MaterialApp(
       title: this.venue.name,
