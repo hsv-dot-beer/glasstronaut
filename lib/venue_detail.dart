@@ -180,7 +180,7 @@ class VenueDetailView extends StatelessWidget {
 
     socialIcons.forEach((key, value) {
       // key is the icon, value is the URL
-      if (value != '') {
+      if (value != '' && value != null) {
         venueCards.add(Card(
             child: ListTile(
           title: Text(value),
