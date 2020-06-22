@@ -230,6 +230,7 @@ class _BeerWidgetState extends State<BeerWidget> {
                 });
               },
               isDense: true,
+              isExpanded: true,
             ),
           ),
           decoration: InputDecoration(
