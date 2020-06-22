@@ -223,7 +223,7 @@ class BeerDetailView extends StatelessWidget {
       }
     });
 
-    if (beerActions != []) {
+    if (beerActions.isNotEmpty) {
       children.add(Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
