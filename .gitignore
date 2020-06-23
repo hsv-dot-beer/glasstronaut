@@ -70,3 +70,8 @@ build/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 .gradle
+
+# New flutter rules
+.flutter-plugins-dependencies
+ios/Flutter/flutter_export_environment.sh
+
