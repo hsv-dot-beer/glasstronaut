@@ -23,6 +23,9 @@ dependencies:
   # parse decimals properly
   decimal: ^0.3.0
 
+  # number formatting
+  intl: ^0.16.1
+
   # web!
   http: ^0.12.0+1
 
