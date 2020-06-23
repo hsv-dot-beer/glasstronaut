@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'beer.dart';
@@ -91,8 +92,11 @@ class BeerDetailView extends StatelessWidget {
 
     // Untappd Metadata
     if (this.beer.untappdMetadata != null) {
+      NumberFormat formatter = NumberFormat.compact(locale: 'en-US');
+      String formattedRatingCount =
+          formatter.format(this.beer.untappdMetadata.jsonData.ratingCount);
       String metadataDetails =
-          'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} (${this.beer.untappdMetadata.jsonData.ratingCount} ratings)';
+          'Average rating: ${this.beer.untappdMetadata.jsonData.weightedRatingScore.toStringAsFixed((2))} ($formattedRatingCount ratings)';
       if (this.beer.untappdMetadata.jsonData.isHomebrew != 0) {
         metadataDetails += '\nHomebrew';
       }
