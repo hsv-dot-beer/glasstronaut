@@ -42,18 +42,15 @@ class BeerDetailView extends StatelessWidget {
 
     if (this.beer.manufacturerUrl != null && this.beer.manufacturerUrl != '') {
       beerCardChildren.add(
-        ButtonTheme.bar(
-          // make buttons use the appropriate styles for cards
-          child: ButtonBar(
-            children: <Widget>[
-              FlatButton(
-                child: const Text('View on the web'),
-                onPressed: () {
-                  _launchURL(this.beer.manufacturerUrl);
-                },
-              ),
-            ],
-          ),
+        ButtonBar(
+          children: <Widget>[
+            FlatButton(
+              child: const Text('View on the web'),
+              onPressed: () {
+                _launchURL(this.beer.manufacturerUrl);
+              },
+            ),
+          ],
         ),
       );
     }
@@ -229,10 +226,9 @@ class BeerDetailView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(title: Text('Learn More')),
-            ButtonTheme.bar(
-              child: ButtonBar(
-                children: beerActions,
-              ),
+            ButtonBar(
+              children: beerActions,
+              overflowButtonSpacing: 8,
             ),
           ],
         ),
@@ -250,7 +246,7 @@ class BeerDetailView extends StatelessWidget {
         appBar: AppBar(
           title: Text(this.beer.name),
         ),
-        body: Column(children: children),
+        body: ListView(children: children),
       ),
     );
   }
