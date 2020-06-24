@@ -185,6 +185,7 @@ class BeerDetailView extends StatelessWidget {
               Text('${p.servingSize.volumeOz} oz'),
               Text('\$${p.price}'),
             ],
+            mainAxisAlignment: MainAxisAlignment.end,
           ));
         });
         rows.add(Row(children: <Widget>[
