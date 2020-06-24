@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'beer.dart';
@@ -155,12 +156,36 @@ class BeerDetailView extends StatelessWidget {
         // each column has two Text()s, one for size and one for price
         List<Column> columns = [];
         venuePrices.forEach((p) {
+          String assetName = '';
+          double assetHeight = 36;
+          if (p.servingSize.volumeOz > Decimal.fromInt(128)) {
+            assetName = 'assets/glassware/keg.svg';
+          } else if (p.servingSize.volumeOz > Decimal.fromInt(24)) {
+            assetName = 'assets/glassware/growler.svg';
+          } else if (p.servingSize.volumeOz > Decimal.fromInt(17)) {
+            assetName = 'assets/glassware/pilsner.svg';
+          } else if (p.servingSize.volumeOz > Decimal.fromInt(12)) {
+            assetName = 'assets/glassware/pint.svg';
+          } else if (p.servingSize.volumeOz > Decimal.fromInt(6)) {
+            assetName = 'assets/glassware/tulip.svg';
+          } else {
+            assetName = 'assets/glassware/pilsner.svg';
+            assetHeight = 18;
+          }
+          debugPrint('asset name $assetName');
           // TODO figure out spacing
           columns.add(Column(
             children: <Widget>[
+              SvgPicture.asset(
+                assetName,
+                semanticsLabel: '${p.servingSize.name}',
+                color: Colors.black87,
+                height: assetHeight,
+              ),
               Text('${p.servingSize.volumeOz} oz'),
               Text('\$${p.price}'),
             ],
+            mainAxisAlignment: MainAxisAlignment.end,
           ));
         });
         rows.add(Row(children: <Widget>[
